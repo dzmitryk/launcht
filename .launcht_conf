@@ -1,0 +1,25 @@
+{
+	"items": [
+		{
+			"type": "entry",
+			"name": "top",
+			"value": "top"
+		},
+		{
+			"type": "menu",
+			"name": "editors",
+			"value": [
+				{
+					"type": "entry",
+					"name": "vi",
+					"value": "vi"
+				},
+				{
+					"type": "entry",
+					"name": "nano",
+					"value": "nano"
+				}
+			]
+		}
+	]
+}
