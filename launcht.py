@@ -16,20 +16,29 @@ LAUNCHT_CONF_FILE = ".launcht_conf"
 
 
 def menu_item_callback(menu_item, cmd):
-    os.popen("%s %s &" % (SHELL_CMD, cmd))
+    os.popen(cmd)
 
 
-def build_menu(items, menu):
+def build_menu(items, menu, default_shell_cmd):
 
     for item in items:
         menu_item = gtk.MenuItem(item["name"])
 
         if item["type"] == "entry":
-            menu_item.connect("activate", menu_item_callback, item["value"])
+            shell_cmd = default_shell_cmd
+
+            # if shell command is specified for entry
+            # then need to override the default one with it
+
+            if "shell-cmd" in item:
+                shell_cmd = item["shell-cmd"]
+
+            cmd = "%s %s &" % (shell_cmd, item["value"])
+            menu_item.connect("activate", menu_item_callback, cmd)
         elif item["type"] == "menu":
             submenu = gtk.Menu()
             menu_item.set_submenu(submenu)
-            build_menu(item["value"], submenu)
+            build_menu(item["value"], submenu, default_shell_cmd)
 
         menu_item.show()
         menu.append(menu_item)
@@ -42,7 +51,16 @@ def build_main_menu():
     conf = json.load(conf_json)
 
     main_menu = gtk.Menu()
-    build_menu(conf["items"], main_menu)
+
+    # init default shell command with gnome-terminal first
+    default_shell_cmd = SHELL_CMD
+
+    # if custom shell-cmd is set in .launcht_conf
+    # then override the default with it
+    if "shell-cmd" in conf:
+        default_shell_cmd = conf["shell-cmd"]
+
+    build_menu(conf["items"], main_menu, default_shell_cmd)
 
     return main_menu
 
