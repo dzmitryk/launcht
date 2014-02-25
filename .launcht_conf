@@ -1,4 +1,5 @@
 {
+	"shell-cmd": "gnome-terminal -x",
 	"items": [
 		{
 			"type": "entry",
