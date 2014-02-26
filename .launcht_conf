@@ -24,6 +24,16 @@
 					"value": "nano"
 				}
 			]
+		},
+		{
+			"type": "separator"
+		},
+		{
+			"comment": "opens launcht configuration file for editing",
+			"type": "entry",
+			"name": "Configure",
+			"shell-cmd": "xdg-open",
+			"value": "~/.launcht_conf"
 		}
 	]
 }
