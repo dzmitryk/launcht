@@ -22,9 +22,10 @@ def menu_item_callback(menu_item, cmd):
 def build_menu(items, menu, default_shell_cmd):
 
     for item in items:
-        menu_item = gtk.MenuItem(item["name"])
 
         if item["type"] == "entry":
+            menu_item = gtk.MenuItem(item["name"])
+
             shell_cmd = default_shell_cmd
 
             # if shell command is specified for entry
@@ -36,9 +37,13 @@ def build_menu(items, menu, default_shell_cmd):
             cmd = "%s %s &" % (shell_cmd, item["value"])
             menu_item.connect("activate", menu_item_callback, cmd)
         elif item["type"] == "menu":
+            menu_item = gtk.MenuItem(item["name"])
+
             submenu = gtk.Menu()
             menu_item.set_submenu(submenu)
             build_menu(item["value"], submenu, default_shell_cmd)
+        elif item["type"] == "separator":
+            menu_item = gtk.SeparatorMenuItem()
 
         menu_item.show()
         menu.append(menu_item)
