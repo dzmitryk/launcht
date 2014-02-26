@@ -7,6 +7,9 @@
 			"value": "top"
 		},
 		{
+			"type": "separator"
+		},
+		{
 			"type": "menu",
 			"name": "editors",
 			"value": [
