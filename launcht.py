@@ -1,7 +1,6 @@
 #!/usr/bin/python
 
 # TODO: find monochrome icon for the app
-# TODO: automatically generate .launcht_conf 
 # TODO: installation
 
 
