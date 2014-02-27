@@ -9,6 +9,8 @@ import os
 import json
 import gtk
 import appindicator
+import shutil
+import sys
 
 
 SHELL_CMD = "gnome-terminal -x"
@@ -51,7 +53,17 @@ def build_menu(items, menu, default_shell_cmd):
 
 def build_main_menu():
 
-    conf_json = open("%s/%s" % (os.getenv("HOME"), LAUNCHT_CONF_FILE))
+    conf_path = "%s/%s" % (os.getenv("HOME"), LAUNCHT_CONF_FILE)
+
+    # if no config file exists then create one by copying the default config
+    if not os.path.isfile(conf_path):
+        try:
+            shutil.copy(LAUNCHT_CONF_FILE, conf_path)
+        except IOError:
+            print "Can't open default configuration file. Please ensure all the app files were downloaded correctly."
+            sys.exit(1)
+
+    conf_json = open(conf_path)
 
     conf = json.load(conf_json)
 
