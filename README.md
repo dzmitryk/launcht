@@ -14,7 +14,7 @@ cd launcht
 
 On first launch json configuration file `.launcht_conf` will be created in your home directory. Edit it to customize items in the launch menu.
 
-Basic configuration structure:
+### Basic configuration structure:
 
 ```json
 {
