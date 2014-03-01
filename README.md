@@ -18,7 +18,7 @@ On first launch json configuration file `.launcht_conf` will be created in your 
 
 ```json
 {
-  "shell-cmd": "gnome-terminal -x",
+	"shell-cmd": "gnome-terminal -x",
 	"items": [
 		{
 			"type": "entry",
