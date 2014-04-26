@@ -6,6 +6,14 @@ Easily configurable Ubuntu indicator applet for quick launch of terminal apps.
 Installation and usage
 =======
 
+Application requires `appindicator` module to be installed. To do this in Ubuntu run the following command:
+
+```
+sudo apt-get install python-appindicator
+```
+
+After that is complete you can run the app:
+
 ```
 git clone https://github.com/dzmitryk/launcht.git
 cd launcht
