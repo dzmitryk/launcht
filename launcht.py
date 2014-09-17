@@ -13,6 +13,8 @@ import sys
 
 SHELL_CMD = "gnome-terminal -x"
 LAUNCHT_CONF_FILE = ".launcht_conf"
+DESKTOP_FILE = ".config/autostart/launcht.desktop"
+DESKTOP_FILE_SNIPPET = "[Desktop Entry]\nVersion=1.0\nName=launcht\nExec=%s\nPath=%s\nTerminal=false\nType=Application\nCategories=Utility;Application;"
 
 
 def menu_item_callback(menu_item, cmd):
@@ -52,6 +54,7 @@ def build_menu(items, menu, default_shell_cmd):
 def build_main_menu():
 
     conf_path = "%s/%s" % (os.getenv("HOME"), LAUNCHT_CONF_FILE)
+    desktop_file_path = "%s/%s" % (os.getenv("HOME"), DESKTOP_FILE)
 
     # if no config file exists then create one by copying the default config
     if not os.path.isfile(conf_path):
@@ -67,6 +70,14 @@ def build_main_menu():
 
     main_menu = gtk.Menu()
 
+    # create/remove auto launch shortcut if needed
+    if "autostart" in conf and conf["autostart"] == "true":
+        if not os.path.isfile(desktop_file_path):
+            create_autolaunch_shortcut(sys.argv[0], desktop_file_path)
+    else:
+        if os.path.isfile(desktop_file_path):
+            os.remove(desktop_file_path)
+        
     # init default shell command with gnome-terminal first
     default_shell_cmd = SHELL_CMD
 
@@ -78,6 +89,15 @@ def build_main_menu():
     build_menu(conf["items"], main_menu, default_shell_cmd)
 
     return main_menu
+
+
+def create_autolaunch_shortcut(executable_file_name, desktop_file_path):
+    executable_path = os.path.realpath(executable_file_name)
+    executable_dir = os.path.dirname(executable_path)
+
+    desktop_file = open(desktop_file_path, "w+")
+    desktop_file.write(DESKTOP_FILE_SNIPPET % (executable_path, executable_dir))
+    desktop_file.close()
 
 
 if __name__ == "__main__":
