@@ -1,6 +1,5 @@
 #!/usr/bin/python
 
-# TODO: find monochrome icon for the app
 # TODO: installation
 
 
@@ -82,8 +81,7 @@ def build_main_menu():
 
 
 if __name__ == "__main__":
-    indicator = appindicator.Indicator("launcht", "gtk-execute", appindicator.CATEGORY_APPLICATION_STATUS)
-    indicator.set_label("launcht")
+    indicator = appindicator.Indicator("launcht", os.path.realpath("launcht.png"), appindicator.CATEGORY_APPLICATION_STATUS)
     indicator.set_status(appindicator.STATUS_ACTIVE)
 
     menu = build_main_menu()
