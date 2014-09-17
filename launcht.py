@@ -50,6 +50,11 @@ def build_menu(items, menu, default_shell_cmd):
         menu_item.show()
         menu.append(menu_item)
 
+    quit_item = gtk.MenuItem("Quit")
+    quit_item.connect("activate", lambda m: gtk.main_quit())
+    quit_item.show()
+    menu.append(quit_item)
+
 
 def build_main_menu():
 
