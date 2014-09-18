@@ -27,6 +27,7 @@ On first launch json configuration file `.launcht_conf` will be created in your 
 ```json
 {
 	"shell-cmd": "gnome-terminal -x",
+	"autostart":"false",
 	"items": [
 		{
 			"type": "entry",
@@ -57,6 +58,7 @@ On first launch json configuration file `.launcht_conf` will be created in your 
 ```
 
 * `shell-cmd` specifies terminal shell command or any other command prefix i.e. default Ubuntu terminal `gnome-terminal -x`, this is usually set globally but can be overridden for specific entry
+* `autostart` specifies whether the app should start automatically when user logs in
 * `items` declares array of menu items
 * `type` entry type, following types are supported:
   * `entry` specific app launch entry
