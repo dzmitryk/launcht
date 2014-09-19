@@ -1,7 +1,7 @@
 launcht
 =======
 
-Easily configurable Ubuntu indicator applet for quick launch of terminal apps.
+Ubuntu indicator applet with configurable shortcut list for quick launch of terminal apps, somewhat inspired by [shuttle](https://github.com/fitztrev/shuttle) for OS X.
 
 Installation and usage
 =======
@@ -20,7 +20,7 @@ cd launcht
 ./launcht.py
 ```
 
-On first launch json configuration file `.launcht_conf` will be created in your home directory. Edit it to customize items in the launch menu.
+The shortcut list can be configured using JSON config file `.launcht_conf` which is located in user home directory (default configuration will be created automatically when you launch the app for the first time). Edit it to customize items in the launch menu.
 
 ### Basic configuration structure:
 
