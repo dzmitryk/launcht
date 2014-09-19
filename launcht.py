@@ -1,7 +1,5 @@
 #!/usr/bin/python
 
-# TODO: installation
-
 
 import os
 import json
@@ -13,8 +11,12 @@ import sys
 
 SHELL_CMD = "gnome-terminal -x"
 LAUNCHT_CONF_FILE = ".launcht_conf"
-DESKTOP_FILE = ".config/autostart/launcht.desktop"
-DESKTOP_FILE_SNIPPET = "[Desktop Entry]\nVersion=1.0\nName=launcht\nExec=%s\nPath=%s\nTerminal=false\nType=Application\nCategories=Utility;Application;"
+ICON_FILE = "launcht.png"
+DESKTOP_ICON_FILE = "launcht128.png"
+DESKTOP_FILE = "launcht.desktop"
+DESKTOP_FILE_SNIPPET = "[Desktop Entry]\nVersion=1.0\nName=launcht\nExec=%s\nPath=%s\nIcon=%s\nTerminal=false\nType=Application\nCategories=Utility;Application;"
+AUTO_START_DIR = ".config/autostart"
+DASH_SHORTCUT_DIR = ".local/share/applications"
 
 
 def menu_item_callback(menu_item, cmd):
@@ -52,9 +54,11 @@ def build_menu(items, menu, default_shell_cmd):
 
 
 def build_main_menu():
+    executable_file = sys.argv[0]
 
     conf_path = "%s/%s" % (os.getenv("HOME"), LAUNCHT_CONF_FILE)
-    desktop_file_path = "%s/%s" % (os.getenv("HOME"), DESKTOP_FILE)
+    dash_shortcut_file_path = "%s/%s/%s" % (os.getenv("HOME"), DASH_SHORTCUT_DIR, DESKTOP_FILE)
+    autostart_file_path = "%s/%s/%s" % (os.getenv("HOME"), AUTO_START_DIR, DESKTOP_FILE)
 
     # if no config file exists then create one by copying the default config
     if not os.path.isfile(conf_path):
@@ -64,6 +68,10 @@ def build_main_menu():
             print "Can't open default configuration file. Please ensure all the app files were downloaded correctly."
             sys.exit(1)
 
+    # create desktop file for dash if needed
+    if not os.path.isfile(dash_shortcut_file_path):
+        create_shortcut(executable_file, dash_shortcut_file_path, DESKTOP_ICON_FILE)
+
     conf_json = open(conf_path)
 
     conf = json.load(conf_json)
@@ -72,11 +80,11 @@ def build_main_menu():
 
     # create/remove auto launch shortcut if needed
     if "autostart" in conf and conf["autostart"] == "true":
-        if not os.path.isfile(desktop_file_path):
-            create_autolaunch_shortcut(sys.argv[0], desktop_file_path)
+        if not os.path.isfile(autostart_file_path):
+            create_shortcut(executable_file, autostart_file_path, DESKTOP_ICON_FILE)
     else:
-        if os.path.isfile(desktop_file_path):
-            os.remove(desktop_file_path)
+        if os.path.isfile(autostart_file_path):
+            os.remove(autostart_file_path)
         
     # init default shell command with gnome-terminal first
     default_shell_cmd = SHELL_CMD
@@ -96,17 +104,18 @@ def build_main_menu():
     return main_menu
 
 
-def create_autolaunch_shortcut(executable_file_name, desktop_file_path):
+def create_shortcut(executable_file_name, desktop_file_path, icon_file_name):
     executable_path = os.path.realpath(executable_file_name)
     executable_dir = os.path.dirname(executable_path)
+    icon_file_path = "%s/%s" % (executable_dir, icon_file_name)
 
     desktop_file = open(desktop_file_path, "w+")
-    desktop_file.write(DESKTOP_FILE_SNIPPET % (executable_path, executable_dir))
+    desktop_file.write(DESKTOP_FILE_SNIPPET % (executable_path, executable_dir, icon_file_path))
     desktop_file.close()
 
 
 if __name__ == "__main__":
-    indicator = appindicator.Indicator("launcht", os.path.realpath("launcht.png"), appindicator.CATEGORY_APPLICATION_STATUS)
+    indicator = appindicator.Indicator("launcht", os.path.realpath(ICON_FILE), appindicator.CATEGORY_APPLICATION_STATUS)
     indicator.set_status(appindicator.STATUS_ACTIVE)
 
     menu = build_main_menu()
